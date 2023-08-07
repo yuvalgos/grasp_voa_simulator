@@ -1,0 +1,13 @@
+Pose, Grasp, Trials, Successes
+standing_0deg,side_handle,10,7
+standing_0deg,up,10,9
+standing_30deg,side_handle,10,0
+standing_30deg,up,10,6
+upsidedown_0deg,side_handle,10,5
+upsidedown_0deg,Up,10,0
+upsidedown_30deg,side_handle,10,0
+upsidedown_30deg,Up,10,0
+laying_0deg,side_handle,10,2
+laying_0deg,up,10,0
+laying_30deg,side_handle,10,0
+laying_30deg,up,10,0

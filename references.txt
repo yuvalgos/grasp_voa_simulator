@@ -1,0 +1,8 @@
+https://github.com/PaulDanielML/MuJoCo_RL_UR5/blob/master/gym_grasper/controller/MujocoController.py#L47
+(loading urdf for ikpy)
+
+https://github.com/deepmind/mujoco/tree/main/model
+
+projects:
+https://github.com/PaulDanielML/MuJoCo_RL_UR5/blob/master/gym_grasper/controller/MujocoController.py#L47
+https://github.com/deepmind/mujoco_menagerie/tree/main/universal_robots_ur5e
