@@ -25,6 +25,10 @@ def plot_ik_res(joint_state, target, chain_ik):
     plt.show()
 
 
+INITIAL_JOINT_POSITION = [-1.5 ,-1.5, 0.5, -1.5, -1.5, 0]
+END_EFFECTOR_TRANSLATION = [.12, .0, 0]  # for some reason x is depth. maybe I don't know robotics conventions
+
+
 class UrController:
     def __init__(self, model, data):
         self.model = model
@@ -34,10 +38,12 @@ class UrController:
 
         # set starting position manually (not by control to be at a better position for starting (avoid collisions):
         shoulder_jntadr = model.body('shoulder_link').jntadr[0]
-        self.data.qpos[shoulder_jntadr:shoulder_jntadr+6] = [-1.5 ,-1.5, 0.5, -1.5, -1.5, 0]
+        self.data.qpos[shoulder_jntadr:shoulder_jntadr+6] = INITIAL_JOINT_POSITION
 
         self.chain_ik = ikpy.chain.Chain.from_urdf_file("./data/ur5_gripper.urdf",
-                                                        active_links_mask=[False,] + [True]*6 + [False, ],)
+                                                        active_links_mask=[False,] + [True]*6 + [False, ]*2,
+                                                        # first is base, 2 last are gripper and EE /\
+                                                        last_link_vector=END_EFFECTOR_TRANSLATION)
 
         self.open_gripper()
 
@@ -45,10 +51,7 @@ class UrController:
         assert len(control_input) == 6
         self.data.ctrl[0:6] = control_input
 
-    def set_control_input_with_ik(self, position, orientation3d):
-
-        # joint_position = self.chain_ik.inverse_kinematics(position, orientation3d, orientation_mode="Y") #
-
+    def set_control_input_with_ik(self, position, orientation3d): #
         # get transformation matrix from orientation3d and add position
         orientation_matrix = scipy.spatial.transform.Rotation.from_euler('xyz', orientation3d).as_matrix()
         transformation_matrix = np.zeros((4,4))
@@ -58,14 +61,6 @@ class UrController:
 
         joint_position = self.chain_ik.inverse_kinematics_frame(transformation_matrix,
                                                                 orientation_mode='all')
-
-        plot_ik_res(joint_position, position, self.chain_ik)
-
-        # TODO add check that close enough
-
-        print(joint_position)
-
-        import matplotlib.pyplot as p
 
         self.set_robot_control_input(joint_position[1:7])
 
