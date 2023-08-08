@@ -2,8 +2,9 @@ import mujoco as mj
 import mujoco.viewer as mj_viewer
 import time
 from math import pi
-from utils import set_camera_overview, ManipulatedObject, UrController
-
+from grasp_simulator.utils import set_camera_overview
+from grasp_simulator.manipulated_object import ManipulatedObject
+from grasp_simulator.ur_controller import UrController
 
 model = mj.MjModel.from_xml_path("./data/world_mug.xml")
 data = mj.MjData(model)
