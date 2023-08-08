@@ -55,6 +55,8 @@ Control Engineering / Automation Engineering
 		<exclude body1="forearm_link" body2="wrist_1_link"/>
 		<exclude body1="wrist_1_link" body2="wrist_2_link"/>
         <exclude body1="wrist_2_link" body2="wrist_3_link"/>
+        <exclude body1="forearm_link" body2="wrist_3_link"/> <!--something wrong with forearm collision with wrist 3-->
+        <exclude body1="forearm_link" body2="wrist_2_link"/> <!--something wrong with forearm collision with wrist 3-->
         <exclude body1="ee_link" body2="wrist_3_link"/>
     </contact>
 
@@ -91,7 +93,7 @@ Control Engineering / Automation Engineering
                     <geom type="mesh"  mesh="shoulder" material="ur5_mat"/>
                     <body name="upper_arm_link" pos="0 0.13585 0" quat="0.707107 0 0.707107 0">
                         <inertial pos="0 0 0.28" mass="8.393" diaginertia="0.226891 0.226891 0.0151074" />
-                        <joint name="shoulder_lift_joint" class="UR5" pos="0 0 0" axis="0 1 0" limited="true" range="-3.14159 0" /> <!--Range= -3.14159 3.14159-->
+                        <joint name="shoulder_lift_joint" class="UR5" pos="0 0 0" axis="0 1 0" limited="true" range="-3.14159 3.1459" /> <!--Range= -3.14159 3.14159-->
                         <geom type="mesh"  mesh="upperarm" material="ur5_mat"/>
                         <body name="forearm_link" pos="0 -0.1197 0.425">
                             <inertial pos="0 0 0.25" mass="2.275" diaginertia="0.0494433 0.0494433 0.004095" />
