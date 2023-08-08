@@ -45,13 +45,17 @@ class UrController:
                                                         # first is base, 2 last are gripper and EE /\
                                                         last_link_vector=END_EFFECTOR_TRANSLATION)
 
+        mj.mj_forward(model, data)  # make sure that data is up-to-date for next line
+        self.base_link_pos = self.data.body('base_link').xpos
+
         self.open_gripper()
 
     def set_robot_control_input(self, control_input):
         assert len(control_input) == 6
         self.data.ctrl[0:6] = control_input
 
-    def set_control_input_with_ik(self, position, orientation3d): #
+    def set_control_input_with_ik(self, position, orientation3d):
+        position = self.world2robot_coord(position.copy())
         # get transformation matrix from orientation3d and add position
         orientation_matrix = scipy.spatial.transform.Rotation.from_euler('xyz', orientation3d).as_matrix()
         transformation_matrix = np.zeros((4,4))
@@ -68,7 +72,13 @@ class UrController:
         self.data.ctrl[6] = -1.0
 
     def open_gripper(self):
-        self.data.ctrl[6] = 0.2
+        self.data.ctrl[6] = 0.4
+
+    def world2robot_coord(self, position):
+        return position - self.base_link_pos
+
+    def robot2world_coord(self, position):
+        return position + self.base_link_pos
 
 
 class ManipulatedObject:
