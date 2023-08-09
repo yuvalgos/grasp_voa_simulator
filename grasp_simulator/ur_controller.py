@@ -78,14 +78,14 @@ class UrController:
     def get_ee_position(self):
         return self.ee_data.xpos.copy() + END_EFFECTOR_TRANSLATION
 
-    def is_position_reached(self, ee_position, pos_max_err, max_vel):
+    def is_position_reached(self, ee_target_position, pos_max_err, max_vel):
         '''
         generally, we would like to check that we are close enough in position and in orientation,
         but there is a problem that need to be fixed with oreintation: there is mismatch between inverse
         kinematics and mujoco model. so for now we only check position and that the robot doesn't move.
         '''
 
-        close_enough = np.all(np.abs(self.get_ee_position() - ee_position) < pos_max_err)
+        close_enough = np.all(np.abs(self.get_ee_position() - ee_target_position) < pos_max_err)
         joint_vel = self.data.qvel[self.shoulder_jntadr:self.shoulder_jntadr + 6]
         not_moving = np.all(joint_vel < max_vel)
         return close_enough and not_moving

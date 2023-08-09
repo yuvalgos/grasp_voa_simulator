@@ -32,8 +32,10 @@ class GraspSimulator:
             set_camera_overview(self.viewer)
 
         # just put the object in a nice position for starting
-        self.m_obj.set_position([0, -0.7, 1.2])
+        self.m_obj.set_position([0, -0.65, 1.2])
         self.m_obj.set_orientation_euler([0, 0, 1.5])
+
+        self.verbose = 0
 
     def try_grasp(self, ee_pos, ee_orientation) -> bool:
         ''' try a grasp with the current object pose and a given grasp parameters, return whether successful'''
@@ -57,7 +59,8 @@ class GraspSimulator:
         pre_grasp_pos = ee_pos - R @ np.array([0.15, 0, 0])
 
         success = self.move_ee_to_pose(pre_grasp_pos, ee_orientation)
-        print("move_ee_to_pre_grasp success: ", success)
+        if self.verbose>0:
+            print("move_ee_to_pre_grasp success: ", success)
 
     def move_from_pre_grasp_to_grasp_pose(self):
         pass
@@ -68,7 +71,7 @@ class GraspSimulator:
     def check_grasp_success(self, initial_obj_pos, final_obj_pos) -> bool:
         pass
 
-    def move_ee_to_pose(self, ee_pos, ee_orientation, max_time=5, pos_max_err=0.1,  max_vel=0.05) -> bool:
+    def move_ee_to_pose(self, ee_pos, ee_orientation, max_time=5, pos_max_err=0.2,  max_vel=0.05) -> bool:
         """
         :param ee_pos: target position in world coordinates
         :param ee_orientation: target orientation in euler angles

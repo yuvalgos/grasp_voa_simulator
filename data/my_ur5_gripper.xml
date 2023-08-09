@@ -62,13 +62,13 @@ Control Engineering / Automation Engineering
 
 <worldbody>
 <!--        table for items:-->
-        <body name="box_2_link" pos="0 -0.7 0.5">
+        <body name="box_2_link" pos="0 -0.65 0.5">
             <!--<geom size=".3 .2 .435" type="box" material="bench_mat"/>-->
-            <geom size=".20 .13 .03" pos ="0 0 0.515" type="box" material="bench_mat"/>
-            <geom size=".04 .04 .55" pos =".17 .10 0" type="box" material="bench_mat"/>
-            <geom size=".04 .04 .55" pos ="-.17 .10 0" type="box" material="bench_mat"/>
-            <geom size=".04 .04 .55" pos =".17 -.10 0" type="box" material="bench_mat"/>
-            <geom size=".04 .04 .55" pos ="-.17 -.10 0" type="box" material="bench_mat"/>
+            <geom size=".20 .11 .03" pos ="0 0 0.515" type="box" material="bench_mat"/>
+            <geom size=".04 .04 .55" pos =".17 .09 0" type="box" material="bench_mat"/>
+            <geom size=".04 .04 .55" pos ="-.17 .09 0" type="box" material="bench_mat"/>
+            <geom size=".04 .04 .55" pos =".17 -.09 0" type="box" material="bench_mat"/>
+            <geom size=".04 .04 .55" pos ="-.17 -.09 0" type="box" material="bench_mat"/>
             <inertial pos="0 0 0" mass="1000" diaginertia="0 0 0" />
         </body>
 
