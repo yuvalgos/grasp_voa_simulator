@@ -1,5 +1,5 @@
 import time
-
+from math import pi
 import numpy as np
 import scipy
 from grasp_simulator.utils import set_camera_overview
@@ -8,6 +8,31 @@ from grasp_simulator.ur_controller import UrController
 import mujoco as mj
 import mujoco.viewer as mj_viewer
 
+
+"""
+Grasping simulator
+main useable method is try_grasp(position, orientation). 
+This method will try to grasp the object at the given position and orientation and pick it up.
+returns True if successful, a.k.a. the object height changed. 
+
+grasp procidure:
+1. move to pre-grasp pose which is the grasp pose with a 15 cm backwards offset from the object
+2. move to grasp pose
+3. close gripper
+4. pick up and wait for a second
+5. check if object height is different from initial height by enough to consider the grasp successful
+"""
+
+
+OBJECT_START_POSITION = [0, -0.65, 1.2]
+OBJECT_START_ORIENTATION = [0, 0, 1.5]
+
+PRE_GRASP_DISTANCE = 0.15
+
+PICKUP_POINT = [0, -0.65, 1.4]
+PICKUP_ORIENTATION = [0, pi/4, 0]
+
+MIN_HEIGHT_DIFF_FOR_SUCCESS = 0.15
 
 class GraspSimulator:
     def __init__(self, launch_viewer=True, real_time=False):
@@ -32,20 +57,21 @@ class GraspSimulator:
             set_camera_overview(self.viewer)
 
         # just put the object in a nice position for starting
-        self.m_obj.set_position([0, -0.65, 1.2])
-        self.m_obj.set_orientation_euler([0, 0, 1.5])
+        self.m_obj.set_position(OBJECT_START_POSITION)
+        self.m_obj.set_orientation_euler(OBJECT_START_ORIENTATION)
 
         self.verbose = 0
 
     def try_grasp(self, ee_pos, ee_orientation) -> bool:
         ''' try a grasp with the current object pose and a given grasp parameters, return whether successful'''
-        
-        initial_obj_pos = self.m_obj.get_position()
-        
+        initial_obj_pos = self.m_obj.get_position().copy()
+
+        # TODO: handle failure in each of these steps
         self.move_ee_to_pre_grasp(ee_pos, ee_orientation)
-        self.move_from_pre_grasp_to_grasp_pose()
-        self.controller.close_gripper()
+        self.move_from_pre_grasp_to_grasp_pose(ee_pos, ee_orientation)
+        self.close_gripper()
         self.pick_up()
+        self.simulate_seconds(1)
         
         final_obj_pos = self.m_obj.get_position()
         
@@ -56,20 +82,24 @@ class GraspSimulator:
         # get orientation rotation matrix:
         R = scipy.spatial.transform.Rotation.from_euler('xyz', ee_orientation).as_matrix()
         # get pre grasp position in world coordinates:
-        pre_grasp_pos = ee_pos - R @ np.array([0.15, 0, 0])
+        pre_grasp_pos = ee_pos - R @ np.array([PRE_GRASP_DISTANCE, 0, 0])
 
-        success = self.move_ee_to_pose(pre_grasp_pos, ee_orientation)
-        if self.verbose>0:
+        success = self.move_ee_to_pose(pre_grasp_pos, ee_orientation, max_time=4)
+        if self.verbose > 0:
             print("move_ee_to_pre_grasp success: ", success)
 
-    def move_from_pre_grasp_to_grasp_pose(self):
-        pass
+    def move_from_pre_grasp_to_grasp_pose(self, ee_pos, ee_orientation):
+        success = self.move_ee_to_pose(ee_pos, ee_orientation, max_time=2)
+        if self.verbose > 0:
+            print("move from pre grasp to grasp success: ", success)
 
     def pick_up(self):
-        pass
+        success = self.move_ee_to_pose(PICKUP_POINT, PICKUP_ORIENTATION, max_time=2)
+        if self.verbose > 0:
+            print("pick up movement success: ", success, "(arm, not necessarily object!)")
 
     def check_grasp_success(self, initial_obj_pos, final_obj_pos) -> bool:
-        pass
+        return final_obj_pos[2] - initial_obj_pos[2] > MIN_HEIGHT_DIFF_FOR_SUCCESS
 
     def move_ee_to_pose(self, ee_pos, ee_orientation, max_time=5, pos_max_err=0.2,  max_vel=0.05) -> bool:
         """
@@ -88,6 +118,13 @@ class GraspSimulator:
                 return True
         return False
 
+    def close_gripper(self, max_time=1):
+        ''' close gripper but also simulate wait for it to close '''
+        self.controller.close_gripper()
+        max_iter = int(max_time / self.model.opt.timestep)
+        for i in range(max_iter):
+            self.step_simulation()
+
     def step_simulation(self):
         step_start = time.time()
 
@@ -100,11 +137,12 @@ class GraspSimulator:
             if time_until_next_step > 0:
                 time.sleep(time_until_next_step)
 
+    def simulate_seconds(self, seconds):
+        max_iter = int(seconds / self.model.opt.timestep)
+        for i in range(max_iter):
+            self.step_simulation()
+
     def run_inifinitely(self):
         while True:
             self.step_simulation()
-
-
-
-        
 
