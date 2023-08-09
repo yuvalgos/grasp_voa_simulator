@@ -14,7 +14,7 @@ Control Engineering / Automation Engineering
 <mujoco model="ur5gripper">
     <compiler angle="radian"
               inertiafromgeom="true"/>
-    <option timestep="2e-3"
+    <option timestep="2.5e-3"
             iterations="10"
             tolerance="1e-10"
             impratio="20"/>
