@@ -8,3 +8,9 @@ https://github.com/deepmind/mujoco/tree/main/model
 projects:
 https://github.com/PaulDanielML/MuJoCo_RL_UR5/blob/master/gym_grasper/controller/MujocoController.py#L47
 https://github.com/deepmind/mujoco_menagerie/tree/main/universal_robots_ur5e
+
+solving the convex hull problem for cup:
+not solution:
+https://www.roboti.us/forum/index.php?threads/wrong-physical-behavior-or.4150/
+with solution link in the end:
+https://github.com/deepmind/mujoco/discussions/738

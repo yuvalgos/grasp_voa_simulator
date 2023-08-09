@@ -15,7 +15,6 @@ class UrController:
         self.robot_control_input = data.ctrl[0:6]
         self.gripper_control_input = data.ctrl[6]
 
-        # set starting position manually (not by control to be at a better position for starting (avoid collisions):
         self.shoulder_jntadr = model.body('shoulder_link').jntadr[0]
         self.data.qpos[self.shoulder_jntadr:self.shoulder_jntadr + 6] = INITIAL_JOINT_POSITION
         # set control to same value as well:
@@ -26,11 +25,18 @@ class UrController:
                                                         # first is base, 2 last are gripper and EE /\
                                                         last_link_vector=END_EFFECTOR_TRANSLATION)
 
+        self.reset()
+
         mj.mj_forward(model, data)  # make sure that data is up-to-date for next line
         self.base_link_pos = self.data.body('base_link').xpos
 
         self.ee_data = self.data.body('ee_link')
 
+    def reset(self):
+        # set starting position manually (not by control to be at a better position for starting (avoid collisions):
+        self.data.qpos[self.shoulder_jntadr:self.shoulder_jntadr + 6] = INITIAL_JOINT_POSITION
+        # set control to same value as well:
+        self.set_robot_control_input(INITIAL_JOINT_POSITION)
         self.open_gripper()
 
     def set_robot_control_input(self, control_input):

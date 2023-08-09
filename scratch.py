@@ -8,14 +8,25 @@ from grasp_simulator.ur_controller import UrController
 from grasp_simulator.grasp_simulator import GraspSimulator
 
 
-simulator = GraspSimulator(launch_viewer=True, real_time=False)
+# simulator = GraspSimulator(launch_viewer=True, real_time=True)
+simulator = GraspSimulator(launch_viewer=False, real_time=False)
 simulator.verbose = 1
-simulator.simulate_seconds(1)
-res = simulator.try_grasp([0, -0.65, 1.12], [0, pi/2, 0])
+
+simulator.simulate_seconds(0.5)
+res = simulator.try_grasp([0, -0.65, 1.25], [pi, 0, -pi/2])
+
+simulator.reset()
+simulator.simulate_seconds(0.5)
+res = simulator.try_grasp([0, -0.65, 1.22], [pi, 0, -pi/2])
+
+simulator.reset()
+simulator.simulate_seconds(0.5)
+res = simulator.try_grasp([0, -0.65, 1.25], [pi, 0, 0])
+
 print("grasp result: ", res)
 
-simulator.run_inifinitely()
+simulator.simulate_seconds(30)
+# simulator.run_inifinitely()
 
 # TODO:
 # - other objects
-# - shorter timestep 1/500 -> 1/32

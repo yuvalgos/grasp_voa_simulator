@@ -24,15 +24,15 @@ grasp procidure:
 """
 
 
-OBJECT_START_POSITION = [0, -0.65, 1.2]
-OBJECT_START_ORIENTATION = [0, 0, 1.5]
+OBJECT_START_POSITION = [0, -0.65, 1.35]
+OBJECT_START_ORIENTATION = [0, 0, 0]
 
 PRE_GRASP_DISTANCE = 0.15
 
-PICKUP_POINT = [0, -0.65, 1.4]
+PICKUP_POINT = [0, -0.65, 1.45]
 PICKUP_ORIENTATION = [0, pi/4, 0]
 
-MIN_HEIGHT_DIFF_FOR_SUCCESS = 0.15
+MIN_HEIGHT_DIFF_FOR_SUCCESS = 0.10
 
 class GraspSimulator:
     def __init__(self, launch_viewer=True, real_time=False):
@@ -42,13 +42,12 @@ class GraspSimulator:
         """
         self.real_time = real_time
 
-        self.model = mj.MjModel.from_xml_path("./data/world_mug.xml")
+        self.model = mj.MjModel.from_xml_path("./data/world_sprayflask.xml")
         self.data = mj.MjData(self.model)
 
         self.m_obj = ManipulatedObject(self.model, self.data)
         self.controller = UrController(self.model, self.data)
 
-        # mj.mj_resetData(model, data)
         mj.mj_forward(self.model, self.data)
 
         self.viewer = None
@@ -61,6 +60,12 @@ class GraspSimulator:
         self.m_obj.set_orientation_euler(OBJECT_START_ORIENTATION)
 
         self.verbose = 0
+
+    def reset(self):
+        mj.mj_resetData(self.model, self.data)
+        self.m_obj.set_position(OBJECT_START_POSITION)
+        self.m_obj.set_orientation_euler(OBJECT_START_ORIENTATION)
+        self.controller.reset()
 
     def try_grasp(self, ee_pos, ee_orientation) -> bool:
         ''' try a grasp with the current object pose and a given grasp parameters, return whether successful'''
@@ -91,12 +96,12 @@ class GraspSimulator:
         # get pre grasp position in world coordinates:
         pre_grasp_pos = ee_pos - R @ np.array([PRE_GRASP_DISTANCE, 0, 0])
 
-        success = self.move_ee_to_pose(pre_grasp_pos, ee_orientation, max_time=4)
+        success = self.move_ee_to_pose(pre_grasp_pos, ee_orientation, max_time=3)
         if self.verbose > 0:
             print("move_ee_to_pre_grasp success: ", success)
 
     def move_from_pre_grasp_to_grasp_pose(self, ee_pos, ee_orientation):
-        success = self.move_ee_to_pose(ee_pos, ee_orientation, max_time=2)
+        success = self.move_ee_to_pose(ee_pos, ee_orientation, max_time=1.5)
         if self.verbose > 0:
             print("move from pre grasp to grasp success: ", success)
 
@@ -125,7 +130,7 @@ class GraspSimulator:
                 return True
         return False
 
-    def close_gripper(self, max_time=1):
+    def close_gripper(self, max_time=0.5):
         ''' close gripper but also simulate wait for it to close '''
         self.controller.close_gripper()
         max_iter = int(max_time / self.model.opt.timestep)
