@@ -5,7 +5,7 @@ import scipy
 
 
 INITIAL_JOINT_POSITION = [-1.5 , -1.5, 0.5, -1.5, -1.5, 0]
-END_EFFECTOR_TRANSLATION = [.12, .0, 0]  # for some reason x is depth. maybe I don't know robotics conventions
+END_EFFECTOR_TRANSLATION = np.array([.12, .0, 0])  # for some reason x is depth. maybe I don't know robotics conventions
 
 
 class UrController:
@@ -26,6 +26,8 @@ class UrController:
 
         mj.mj_forward(model, data)  # make sure that data is up-to-date for next line
         self.base_link_pos = self.data.body('base_link').xpos
+
+        self.ee_data = self.data.body('ee_link')
 
         self.open_gripper()
 
@@ -61,3 +63,15 @@ class UrController:
 
     def robot2world_coord(self, position):
         return position + self.base_link_pos
+
+    def get_ee_pose(self):
+        position = self.ee_data.xpos.copy() - END_EFFECTOR_TRANSLATION
+        orientation = scipy.spatial.transform.Rotation.from_quat(self.ee_data.xquat.copy()).as_euler('xyz')
+
+        raise NotImplementedError("don't use get ee pose as there is a problem with the orientation matching from the urdf"
+                                  "usedfor ik and the one used for the mujoco model. couldn't fix that yet.")
+
+        return position, orientation
+
+    def get_ee_position(self):
+        return self.ee_data.xpos.copy() + END_EFFECTOR_TRANSLATION

@@ -25,7 +25,7 @@ with mj.viewer.launch_passive(model, data) as viewer:
     # Close the viewer automatically after 30 wall-seconds.
     start = time.time()
     # controller.set_robot_control_input([-1.5 ,-0.3, 0, 0, 0, -1])
-    controller.set_control_input_with_ik([0.0, -0.6, 0.95], [pi, 0, -pi])
+    controller.set_control_input_with_ik([0.0, -0.6, 1.4], [-pi/2, 0, 0])
 
     while viewer.is_running() and time.time() - start < 500:
         step_start = time.time()
@@ -42,6 +42,7 @@ with mj.viewer.launch_passive(model, data) as viewer:
         # if (time.time() - start)> 26:
         #     controller.open_gripper()
 
+        print(controller.get_ee_position())
 
         mj.mj_step(model, data)
         # Pick up changes to the physics state, apply perturbations, update options from GUI.

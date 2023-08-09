@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 import scipy
 from grasp_simulator.utils import set_camera_overview
@@ -8,7 +10,13 @@ import mujoco.viewer as mj_viewer
 
 
 class GraspSimulator:
-    def __init__(self, launch_viewer=True):
+    def __init__(self, launch_viewer=True, real_time=False):
+        """
+        :param launch_viewer: whether to launch the mujoco viewer
+        :param real_time: whether to run the simulation in real time for visualisation or as fast as possible
+        """
+        self.real_time = real_time
+
         self.model = mj.MjModel.from_xml_path("./data/world_mug.xml")
         self.data = mj.MjData(self.model)
 
@@ -20,7 +28,7 @@ class GraspSimulator:
 
         self.viewer = None
         if launch_viewer:
-            self.viewer = mj_viewer.launch(self.model, self.data)
+            self.viewer = mj_viewer.launch_passive(self.model, self.data)
             set_camera_overview(self.viewer)
 
         # just put the object in a nice position for starting
@@ -48,8 +56,7 @@ class GraspSimulator:
         # get pre grasp position in world coordinates:
         pre_grasp_pos = ee_pos - R @ np.array([0.15, 0, 0])
 
-        self.controller.set_control_input_with_ik(pre_grasp_pos, ee_orientation)
-
+        success = self.move_ee_to_pose(pre_grasp_pos, ee_orientation)
 
     def move_from_pre_grasp_to_grasp_pose(self):
         pass
@@ -59,5 +66,32 @@ class GraspSimulator:
 
     def check_grasp_success(self, initial_obj_pos, final_obj_pos) -> bool:
         pass
+
+    def move_ee_to_pose(self, ee_pos, ee_orientation, max_time=5, pos_max_err=0.1,  max_vel=0.05) -> bool:
+        """
+        :param ee_pos: target position in world coordinates
+        :param ee_orientation: target orientation in euler angles
+        :param max_time: maximum time in simulation to move there
+        :param pos_max_err: maximum acceptable error in each axis to consider the target reached
+        :param max_vel: maximum velocity in each joint to consider end of motion. we only check position arrival,
+            not orientation we want to make sure the robot is not moving anymore
+        """
+        pass
+
+    def step_simulation(self):
+        step_start = time.time()
+
+        mj.mj_step(self.model, self.data)
+        if self.viewer is not None:
+            self.viewer.sync()
+
+        if self.real_time:
+            time_until_next_step = self.model.opt.timestep - (time.time() - step_start)
+            if time_until_next_step > 0:
+                time.sleep(time_until_next_step)
+
+
+
+
         
 
