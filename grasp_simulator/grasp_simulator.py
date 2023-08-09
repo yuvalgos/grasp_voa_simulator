@@ -32,7 +32,7 @@ class GraspSimulator:
             set_camera_overview(self.viewer)
 
         # just put the object in a nice position for starting
-        self.m_obj.set_position([0, -0.6, 1.2])
+        self.m_obj.set_position([0, -0.7, 1.2])
         self.m_obj.set_orientation_euler([0, 0, 1.5])
 
     def try_grasp(self, ee_pos, ee_orientation) -> bool:
@@ -57,6 +57,7 @@ class GraspSimulator:
         pre_grasp_pos = ee_pos - R @ np.array([0.15, 0, 0])
 
         success = self.move_ee_to_pose(pre_grasp_pos, ee_orientation)
+        print("move_ee_to_pre_grasp success: ", success)
 
     def move_from_pre_grasp_to_grasp_pose(self):
         pass
@@ -76,7 +77,13 @@ class GraspSimulator:
         :param max_vel: maximum velocity in each joint to consider end of motion. we only check position arrival,
             not orientation we want to make sure the robot is not moving anymore
         """
-        pass
+        self.controller.set_control_input_with_ik(ee_pos, ee_orientation)
+        max_iter = int(max_time / self.model.opt.timestep)
+        for i in range(max_iter):
+            self.step_simulation()
+            if self.controller.is_position_reached(ee_pos, pos_max_err, max_vel):
+                return True
+        return False
 
     def step_simulation(self):
         step_start = time.time()
@@ -90,6 +97,9 @@ class GraspSimulator:
             if time_until_next_step > 0:
                 time.sleep(time_until_next_step)
 
+    def run_inifinitely(self):
+        while True:
+            self.step_simulation()
 
 
 

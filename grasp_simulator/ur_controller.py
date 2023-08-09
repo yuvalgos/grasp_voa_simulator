@@ -16,8 +16,10 @@ class UrController:
         self.gripper_control_input = data.ctrl[6]
 
         # set starting position manually (not by control to be at a better position for starting (avoid collisions):
-        shoulder_jntadr = model.body('shoulder_link').jntadr[0]
-        self.data.qpos[shoulder_jntadr:shoulder_jntadr+6] = INITIAL_JOINT_POSITION
+        self.shoulder_jntadr = model.body('shoulder_link').jntadr[0]
+        self.data.qpos[self.shoulder_jntadr:self.shoulder_jntadr + 6] = INITIAL_JOINT_POSITION
+        # set control to same value as well:
+        self.set_robot_control_input(INITIAL_JOINT_POSITION)
 
         self.chain_ik = ikpy.chain.Chain.from_urdf_file("./data/ur5_gripper.urdf",
                                                         active_links_mask=[False,] + [True]*6 + [False, ]*2,
@@ -75,3 +77,16 @@ class UrController:
 
     def get_ee_position(self):
         return self.ee_data.xpos.copy() + END_EFFECTOR_TRANSLATION
+
+    def is_position_reached(self, ee_position, pos_max_err, max_vel):
+        '''
+        generally, we would like to check that we are close enough in position and in orientation,
+        but there is a problem that need to be fixed with oreintation: there is mismatch between inverse
+        kinematics and mujoco model. so for now we only check position and that the robot doesn't move.
+        '''
+
+        close_enough = np.all(np.abs(self.get_ee_position() - ee_position) < pos_max_err)
+        joint_vel = self.data.qvel[self.shoulder_jntadr:self.shoulder_jntadr + 6]
+        not_moving = np.all(joint_vel < max_vel)
+        return close_enough and not_moving
+
