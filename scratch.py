@@ -8,10 +8,10 @@ from grasp_simulator.ur_controller import UrController
 from grasp_simulator.grasp_simulator import GraspSimulator
 
 
-simulator = GraspSimulator(launch_viewer=True, real_time=True)
+simulator = GraspSimulator(launch_viewer=True, real_time=False)
 simulator.verbose = 1
 simulator.simulate_seconds(1)
-res = simulator.try_grasp([0, -0.65, 1.1], [0, pi/2, 0])
+res = simulator.try_grasp([0, -0.65, 1.12], [0, pi/2, 0])
 print("grasp result: ", res)
 
 simulator.run_inifinitely()

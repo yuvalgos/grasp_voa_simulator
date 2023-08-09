@@ -64,6 +64,7 @@ class GraspSimulator:
 
     def try_grasp(self, ee_pos, ee_orientation) -> bool:
         ''' try a grasp with the current object pose and a given grasp parameters, return whether successful'''
+        start_time = time.time()
         initial_obj_pos = self.m_obj.get_position().copy()
 
         # TODO: handle failure in each of these steps
@@ -74,6 +75,12 @@ class GraspSimulator:
         self.simulate_seconds(1)
         
         final_obj_pos = self.m_obj.get_position()
+
+        if self.verbose>0:
+            print("initial_obj_pos: ", initial_obj_pos)
+            print("final_obj_pos: ", final_obj_pos)
+            print("total simulation time: ", self.data.time)
+            print("wall clock time: ", time.time()-start_time)
         
         return self.check_grasp_success(initial_obj_pos, final_obj_pos)
 
