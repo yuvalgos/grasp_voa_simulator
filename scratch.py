@@ -1,18 +1,21 @@
-import mujoco as mj
-import mujoco.viewer as mj_viewer
-import time
 from math import pi
-from grasp_simulator.utils import set_camera_overview
-from grasp_simulator.manipulated_object import ManipulatedObject
-from grasp_simulator.ur_controller import UrController
 from grasp_simulator.grasp_simulator import GraspSimulator
+import matplotlib.pyplot as plt
 
 
-# simulator = GraspSimulator(launch_viewer=True, real_time=True)
-simulator = GraspSimulator(launch_viewer=False, real_time=False)
+simulator = GraspSimulator(launch_viewer=True, real_time=True)
+# simulator = GraspSimulator(launch_viewer=False, real_time=False)
 simulator.verbose = 1
+simulator.simulate_seconds(1)
 
-simulator.simulate_seconds(0.5)
+# sensor = simulator.sensor
+# sens = sensor.render()
+# sens[sens > 1] = 1
+# plt.imshow(sens)
+# plt.colorbar()
+# plt.show()
+
+
 res = simulator.try_grasp([0, -0.65, 1.25], [pi, 0, -pi/2])
 
 simulator.reset()
