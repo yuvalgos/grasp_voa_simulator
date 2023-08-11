@@ -171,7 +171,7 @@ class GraspSimulator:
         for i in range(max_iter):
             self.step_simulation()
 
-    def run_inifinitely(self):
+    def run_infinitely(self):
         while True:
             self.step_simulation()
 

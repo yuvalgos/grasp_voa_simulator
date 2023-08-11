@@ -4,16 +4,11 @@ import matplotlib.pyplot as plt
 
 
 simulator = GraspSimulator(launch_viewer=True, real_time=True)
+# Note: without viewer, the simulation is about ~20x faster, so we will use:
 # simulator = GraspSimulator(launch_viewer=False, real_time=False)
-# Note: without viewer, the simulation is about ~20x faster
-simulator.verbose = 1
+# I'll add the logic to record videos without the viewer later if needed
 
-# sensor = simulator.sensor
-# sens = sensor.render()
-# sens[sens > 1] = 1
-# plt.imshow(sens)
-# plt.colorbar()
-# plt.show()
+simulator.verbose = 1   # set to 0 to disable printouts (default is 0)
 
 
 # object starts at default position, grasp from the front
@@ -40,8 +35,5 @@ simulator.simulate_seconds(0.5)
 res = simulator.try_grasp([0, 0, 0.2], [pi, 0, -pi/2])
 print("--------grasp result: ", res)
 
-simulator.simulate_seconds(30)
-# simulator.run_inifinitely()
-
-# TODO:
-# - other objects
+simulator.simulate_seconds(30)  # leave window open for 30 more seconds
+# simulator.run_infinitely()  # if you want to play with the viewer
