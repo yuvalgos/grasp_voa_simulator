@@ -22,15 +22,22 @@ grasp procidure:
 3. close gripper
 4. pick up and wait for a second
 5. check if object height is different from initial height by enough to consider the grasp successful
+
+world coordinates in mujoco is not reflected to the user, instead, for simplicity, the center of the object's
+table is considered the origin of the world (for controlling the robot arm and the object initial position).
 """
 
+TABLE_ORIGIN = np.array([0, -0.65, 1.115])
+def table2world(position):
+    return position + TABLE_ORIGIN
 
-OBJECT_START_POSITION = [0, -0.65, 1.35]
-OBJECT_START_ORIENTATION = [0, 0, 0]
+
+OBJECT_START_POSITION = table2world(np.array([0, 0, 0.25]))  # just a default
+OBJECT_START_ORIENTATION = [0, 0, 0]  # just a default orientation
 
 PRE_GRASP_DISTANCE = 0.15
 
-PICKUP_POINT = [0, -0.65, 1.45]
+PICKUP_POINT = table2world(np.array([0, 0, 0.4]))
 PICKUP_ORIENTATION = [0, pi/4, 0]
 
 MIN_HEIGHT_DIFF_FOR_SUCCESS = 0.10
@@ -63,14 +70,22 @@ class GraspSimulator:
 
         self.verbose = 0
 
-    def reset(self):
+        self.reset()
+
+    def reset(self, object_orientation=None, object_position_offset=None):
+        if object_orientation is None:
+            object_orientation = OBJECT_START_ORIENTATION
+        position = OBJECT_START_POSITION if object_position_offset is None else table2world(object_position_offset)
+
         mj.mj_resetData(self.model, self.data)
-        self.m_obj.set_position(OBJECT_START_POSITION)
-        self.m_obj.set_orientation_euler(OBJECT_START_ORIENTATION)
+        self.m_obj.set_position(position)
+        self.m_obj.set_orientation_euler(object_orientation)
         self.controller.reset()
 
-    def try_grasp(self, ee_pos, ee_orientation) -> bool:
+    def try_grasp(self, ee_pos_table, ee_orientation) -> bool:
         ''' try a grasp with the current object pose and a given grasp parameters, return whether successful'''
+        ee_pos = table2world(ee_pos_table)
+
         start_time = time.time()
         initial_obj_pos = self.m_obj.get_position().copy()
 

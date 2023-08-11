@@ -28,7 +28,7 @@ class UrController:
         self.reset()
 
         mj.mj_forward(model, data)  # make sure that data is up-to-date for next line
-        self.base_link_pos = self.data.body('base_link').xpos
+        self.base_link_pos = self.data.body('base_link').xpos.copy()
 
         self.ee_data = self.data.body('ee_link')
 
