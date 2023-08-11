@@ -35,5 +35,13 @@ simulator.simulate_seconds(0.5)
 res = simulator.try_grasp([0, 0, 0.2], [pi, 0, -pi/2])
 print("--------grasp result: ", res)
 
+# There is no motion planning nor collision detection so some grasp may fail because the robot
+# hits the table, the object or itself. I tried to arrange the sceneso it will be the least likely but
+# still happens sometimes and causes failure:
+simulator.reset()
+simulator.simulate_seconds(0.5)
+res = simulator.try_grasp([0, 0, 0.20], [0, 0, pi])
+print("--------grasp result: ", res)
+
 simulator.simulate_seconds(30)  # leave window open for 30 more seconds
 # simulator.run_infinitely()  # if you want to play with the viewer
