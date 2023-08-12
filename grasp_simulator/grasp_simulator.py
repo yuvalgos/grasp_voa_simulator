@@ -6,6 +6,7 @@ from grasp_simulator.utils import set_camera_overview
 from grasp_simulator.manipulated_object import ManipulatedObject
 from grasp_simulator.ur_controller import UrController
 from grasp_simulator.Sensor import Sensor
+from grasp_simulator.const_and_config import *
 import mujoco as mj
 import mujoco.viewer as mj_viewer
 
@@ -27,20 +28,6 @@ world coordinates in mujoco is not reflected to the user, instead, for simplicit
 table is considered the origin of the world (for controlling the robot arm and the object initial position).
 """
 
-TABLE_ORIGIN = np.array([0, -0.65, 1.115])
-def table2world(position):
-    return position + TABLE_ORIGIN
-
-
-OBJECT_START_POSITION = table2world(np.array([0, 0, 0.25]))  # just a default
-OBJECT_START_ORIENTATION = [0, 0, 0]  # just a default orientation
-
-PRE_GRASP_DISTANCE = 0.15
-
-PICKUP_POINT = table2world(np.array([0, 0, 0.4]))
-PICKUP_ORIENTATION = [0, pi/4, 0]
-
-MIN_HEIGHT_DIFF_FOR_SUCCESS = 0.10
 
 class GraspSimulator:
     def __init__(self, launch_viewer=True, real_time=False):
