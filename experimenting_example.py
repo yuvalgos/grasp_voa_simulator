@@ -28,3 +28,8 @@ simulator = GraspSimulator(launch_viewer=False, real_time=False)
 for grasp_position, grasp_orientation in itertools.product(grasping_positions, grasping_orientations):
         result = simulator.try_grasp(grasp_position, grasp_orientation)
 
+# TODO: iterate over stable poses, and add noise to x,y,rz in each pose
+# TODO: choose less grasp orientation. need to look manually only on the relevant one's
+# TODO: now a grasp takes about a second. maybe we can change waiting time for each step in the simulator
+#       to speed it up a bit.
+# TODO: do the experiments concurrently on different processes
