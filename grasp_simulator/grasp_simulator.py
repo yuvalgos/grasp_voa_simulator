@@ -5,7 +5,7 @@ import scipy
 from grasp_simulator.utils import set_camera_overview
 from grasp_simulator.manipulated_object import ManipulatedObject
 from grasp_simulator.ur_controller import UrController
-from grasp_simulator.Sensor import Sensor
+from grasp_simulator.sensor import Sensor
 from grasp_simulator.const_and_config import *
 import mujoco as mj
 import mujoco.viewer as mj_viewer
@@ -42,7 +42,7 @@ class GraspSimulator:
 
         self.m_obj = ManipulatedObject(self.model, self.data)
         self.controller = UrController(self.model, self.data)
-        self.sensor = Sensor(self.model, self.data)
+        self.sensors = Sensor(self.model, self.data)
 
         mj.mj_forward(self.model, self.data)
 

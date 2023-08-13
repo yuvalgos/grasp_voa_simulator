@@ -207,7 +207,7 @@ Control Engineering / Automation Engineering
         <motor name='finger_scissor_T' ctrllimited="true" joint='gripperpalm_finger_1_joint' ctrlrange="-0.8 0.8" gear="15"/> -->
     </actuator>
 
-   <!--  <sensor>
+   <!--  <sensors>
         <touch name="gripperpalm_frc" 		site="gripperpalm"/>
 
         <touch name="finger_1_polp_1_frc"	site="gripperfinger_1_polp_1"/>
@@ -221,5 +221,5 @@ Control Engineering / Automation Engineering
         <touch name="finger_middle_link_1_frc" 	site="gripperfinger_middle_polp_1"/>
         <touch name="finger_middle_link_2_frc" 	site="gripperfinger_middle_polp_2"/>
         <touch name="finger_middle_link_3_frc" 	site="gripperfinger_middle_polp_3"/>
-    </sensor> -->
+    </sensors> -->
 </mujoco>
