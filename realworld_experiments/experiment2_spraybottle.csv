@@ -1,0 +1,17 @@
+Pose, Grasp, Trials, Successes
+standing_facing_sideways,above_sense,10,0
+standing_facing_sideways,side_low_sense,10,7
+standing_facing_sideways,side_high_no_sense,10,10
+standing_facing_sideways,low_forkliftlike_nosense,10,0
+standing_facing_forward,above_sense,10,9
+standing_facing_forward,side_low_sense,10,0
+standing_facing_forward,side_high_no_sense,10,10
+standing_facing_forward,low_forkliftlike_nosense,10,0
+laying_sideways,above_sense,10,9
+laying_sideways,side_low_sense,10,0
+laying_sideways,side_high_no_sense,10,0
+laying_sideways,low_forkliftlike_nosense,10,0
+laying_on_lever,above_sense,10,6
+laying_on_lever,side_low_sense,10,0
+laying_on_lever,side_high_no_sense,10,0
+laying_on_lever,low_forkliftlike_nosense,10,7
