@@ -20,7 +20,7 @@ class UrController:
         # set control to same value as well:
         self.set_robot_control_input(INITIAL_JOINT_POSITION)
 
-        self.chain_ik = ikpy.chain.Chain.from_urdf_file("./data/ur5_gripper.urdf",
+        self.chain_ik = ikpy.chain.Chain.from_urdf_file("../data/ur5_gripper.urdf",
                                                         active_links_mask=[False,] + [True]*6 + [False, ]*2,
                                                         # first is base, 2 last are gripper and EE /\
                                                         last_link_vector=END_EFFECTOR_TRANSLATION)

@@ -30,19 +30,22 @@ table is considered the origin of the world (for controlling the robot arm and t
 
 
 class GraspSimulator:
-    def __init__(self, launch_viewer=True, real_time=False):
+    def __init__(self, launch_viewer=True, real_time=False, obj_file=None, lidar_dist=0.25):
         """
         :param launch_viewer: whether to launch the mujoco viewer
         :param real_time: whether to run the simulation in real time for visualisation or as fast as possible
         """
         self.real_time = real_time
 
-        self.model = mj.MjModel.from_xml_path("./data/world_sprayflask.xml")
+        self.model = None
+        if obj_file is not None:
+            self.model = mj.MjModel.from_xml_path(obj_file)
+        else:
+            self.model = mj.MjModel.from_xml_path("../data/world_mug.xml")
         self.data = mj.MjData(self.model)
-
         self.m_obj = ManipulatedObject(self.model, self.data)
         self.controller = UrController(self.model, self.data)
-        self.sensors = Sensor(self.model, self.data)
+        self.sensors = Sensor(self.model, self.data, lidar_dist)
 
         mj.mj_forward(self.model, self.data)
 
@@ -59,11 +62,13 @@ class GraspSimulator:
 
         self.reset()
 
-    def reset(self, object_orientation=None, object_position_offset=None):
+    def reset(self, object_orientation=None, object_position_offset=None, lidar_dist=None):
         if object_orientation is None:
             object_orientation = OBJECT_START_ORIENTATION
         position = OBJECT_START_POSITION if object_position_offset is None else table2world(object_position_offset)
 
+        if lidar_dist is not None:
+            self.sensors.reset(lidar_dist)
         mj.mj_resetData(self.model, self.data)
         self.m_obj.set_position(position)
         self.m_obj.set_orientation_euler(object_orientation)

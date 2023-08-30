@@ -1,0 +1,15 @@
+Sun Aug 27 15:57:13 2023
+WARNING: mju_openResource: unknown file './data/world_mug.xml'
+
+Sun Aug 27 15:57:41 2023
+WARNING: mju_openResource: unknown file './data/world_mug.xml'
+
+Sun Aug 27 15:59:02 2023
+WARNING: mju_openResource: unknown file './data/world_mug.xml'
+
+Sun Aug 27 17:01:34 2023
+WARNING: mju_openResource: unknown file './data/world_mug.xml'
+
+Sun Aug 27 20:34:51 2023
+WARNING: mju_openResource: unknown file './data/world_mug.xml'
+

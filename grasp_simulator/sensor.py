@@ -6,7 +6,7 @@ from grasp_simulator.const_and_config import TABLE_ORIGIN
 
 
 class Sensor:
-    def __init__(self, model, data):
+    def __init__(self, model, data, lidar_dist):
         self.model = model
         self.data = data
 
@@ -23,15 +23,19 @@ class Sensor:
 
         self.side_lidar_camera = MjvCamera()
         self.side_lidar_camera.lookat = TABLE_ORIGIN
-        self.side_lidar_camera.distance = 0.25
+        self.side_lidar_camera.distance = lidar_dist
         self.side_lidar_camera.elevation = 0
         self.side_lidar_camera.azimuth = 180
 
         self.front_lidar_camera = MjvCamera()
         self.front_lidar_camera.lookat = TABLE_ORIGIN
-        self.front_lidar_camera.distance = 0.25
+        self.front_lidar_camera.distance = lidar_dist
         self.front_lidar_camera.elevation = 0
         self.front_lidar_camera.azimuth = 90
+
+    def reset(self, lidar_dist):
+        self.side_lidar_camera.distance = lidar_dist
+        self.front_lidar_camera.distance = lidar_dist
 
     def get_side_lidar_output(self, height=0.1, get_images=False):
         self.side_lidar_camera.lookat = TABLE_ORIGIN + [0, 0, height]
@@ -45,7 +49,7 @@ class Sensor:
         self.lidar_renderer.update_scene(self.data, camera=camera)
         lidar_out = self.lidar_renderer.render()
         # cut the middle line
-        lidar_out = lidar_out[self.lidar_renderer.height//2, :]
+        lidar_out = lidar_out[self.lidar_renderer.height // 2, :]
 
         if not get_images:
             return lidar_out
