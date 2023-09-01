@@ -1,3 +1,4 @@
+import os
 import time
 from math import pi
 import numpy as np
@@ -36,7 +37,6 @@ class GraspSimulator:
         :param real_time: whether to run the simulation in real time for visualisation or as fast as possible
         """
         self.real_time = real_time
-
         self.model = None
         if obj_file is not None:
             self.model = mj.MjModel.from_xml_path(obj_file)

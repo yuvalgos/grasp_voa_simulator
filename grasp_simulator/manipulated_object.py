@@ -29,11 +29,11 @@ class ManipulatedObject:
     def set_orientation_euler(self, orientation):
         assert len(orientation) == 3
          # use scipy to convert euler to quat
-        orientation_quat = scipy.spatial.transform.Rotation.from_euler('zyx', orientation).as_quat()
+        orientation_quat = scipy.spatial.transform.Rotation.from_euler('xyz', orientation).as_quat()
         self.data.qpos[self.jntadr + 3:self.jntadr + 7] = orientation_quat
 
     def get_orientation_euler(self):
-        return scipy.spatial.transform.Rotation.from_quat(self.data.qpos[self.jntadr + 3:self.jntadr + 7]).as_euler('zyx')
+        return scipy.spatial.transform.Rotation.from_quat(self.data.qpos[self.jntadr + 3:self.jntadr + 7]).as_euler('xyz')
 
     def get_orientation_quat(self):
         return self.data.qpos[self.jntadr + 3:self.jntadr + 7]

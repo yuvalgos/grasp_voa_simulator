@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import yaml
+import scipy
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
@@ -145,12 +146,21 @@ def extract_lidar_readings(obj_file_path, pose=None, pose_file=None, lidar_heigh
     if pose_file is not None:
         with open(pose_file, 'r') as yaml_file:
             desired_pose = yaml.load(yaml_file, Loader=yaml.FullLoader)['pose_3']
+    w, x, y, z = scipy.spatial.transform.Rotation.from_euler('xyz', desired_pose['obj_orientation']).as_quat()
+    rotation_matrix = np.array([
+        [1 - 2 * (y ** 2 + z ** 2), 2 * (x * y - w * z), 2 * (x * z + w * y)],
+        [2 * (x * y + w * z), 1 - 2 * (x ** 2 + z ** 2), 2 * (y * z - w * x)],
+        [2 * (x * z - w * y), 2 * (y * z + w * x), 1 - 2 * (x ** 2 + y ** 2)]
+    ])
+    vertices = np.dot(vertices, rotation_matrix.T)
+    min_z = np.min(vertices[:, 2])
     tx, ty, tz = 0., 0., 0.
-    # ty -= lidar_dist
-    rx, ry, rz = desired_pose['obj_orientation']
-    trans = transformation(tx, ty, tz, rx, ry, rz)
-    vertices = np.dot(np.hstack((vertices, np.ones((vertices.shape[0], 1)))), trans)[:, :3]
-    visualize_mesh(vertices, faces)
+    ty += lidar_dist
+    tz += np.abs(min_z)
+    vertices = vertices + np.array([tx, ty, tz])
+    # visualize_mesh(vertices, faces)
+    # trans = transformation(tx, ty, tz, rx, ry, rz)
+    # vertices = np.dot(np.hstack((vertices, np.ones((vertices.shape[0], 1)))), trans)[:, :3]
     h = lidar_height
 
     intersecting_triangles = np.array(find_intersecting_triangles(vertices, faces, h))
@@ -158,8 +168,8 @@ def extract_lidar_readings(obj_file_path, pose=None, pose_file=None, lidar_heigh
 
     inter_points = []
     readings = {}
-    for i in range(360):
-        pnt = closest_intersection(contour, np.tan(i))
+    for i in range(180):
+        pnt = closest_intersection(contour, np.tan(np.radians(i)))
         if pnt[0] != np.inf and pnt[1] != np.inf:
             inter_points.append(pnt)
             idx = i if i <= 180 else i - 360
