@@ -1,0 +1,21 @@
+<mujoco model="mug_lean">
+  <asset>
+    <material name="expo" specular="1" shininess="1"/>
+  </asset>
+
+<!--   <default class="main">-->
+<!--        <geom rgba="1 0 0 1"/>-->
+<!--        <default class="sub">-->
+<!--            <geom rgba="0 1 0 1"/>-->
+<!--        </default>-->
+<!--    </default>-->
+
+  <worldbody>
+    <body name="manipulated_object" pos="0 0 1">
+      <joint type="free" name="manipulated_object_dof"/>
+      <geom name="cap" size=".01 .012 " type="cylinder" material="expo" rgba="0 0.8 0 1"/>
+      <geom name="cyl" size=".009 .05 " pos="0 0 0.06" type="cylinder" material="expo"/>
+      
+    </body>
+  </worldbody>
+</mujoco>

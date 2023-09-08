@@ -1,0 +1,59 @@
+pose_1: # standing on cap
+  obj_pos:
+    - 0.0
+    - 0.0
+    - 0.1
+  obj_orientation:
+    - 0.0
+    - 0.0
+    - 0.0
+
+pose_2: # standing cap up
+  obj_pos:
+    - 0.0
+    - 0.0
+    - 0.15
+  obj_orientation:
+    - 0.0
+    - 3.14159265359
+    - 0.0
+
+pose_3: # lying pointing to side
+  obj_pos:
+    - -0.05
+    - 0.0
+    - 0.1
+  obj_orientation:
+    - 0.0
+    - 1.57079632679
+    - 0.0
+
+pose_4: # lying pointing to robot
+  obj_pos:
+    - 0.0
+    - 0.05
+    - 0.1
+  obj_orientation:
+    - 1.57079632679
+    - 1.57079632679
+    - 0.0
+
+pose_5: # lying pointing 45 deg
+  obj_pos:
+    - -0.025
+    - 0.025
+    - 0.1
+  obj_orientation:
+    - 0.78539816339
+    - 1.57079632679
+    - 0.0
+
+pose_6: # lying pointing other 45 deg
+  obj_pos:
+    - -0.025
+    - -0.025
+    - 0.1
+  obj_orientation:
+    - -0.78539816339
+    - 1.57079632679
+    - 0.0

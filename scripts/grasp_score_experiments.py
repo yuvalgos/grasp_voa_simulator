@@ -18,7 +18,7 @@ if __name__ == '__main__':
         poses = yaml.safe_load(yaml_file)
 
     trails_per_pair = 100
-    simulator = GraspSimulator(launch_viewer=False, real_time=False, obj_file='../data/world_mug.xml')
+    simulator = GraspSimulator(launch_viewer=False, real_time=False, obj_file='../data/world_expo.xml')
     rows = [[''] + list(poses.keys())]
     # will take less than an hour on crappy laptop:
     row = []
