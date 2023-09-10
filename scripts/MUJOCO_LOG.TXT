@@ -16,3 +16,18 @@ WARNING: mju_openResource: unknown file './data/world_mug.xml'
 Wed Aug 30 20:25:56 2023
 WARNING: mju_openResource: unknown file 'objects/test/test_obj.xml'
 
+Fri Sep  8 09:56:54 2023
+WARNING: Nan, Inf or huge value in QACC at DOF 3. The simulation is unstable. Time = 0.0160.
+
+Fri Sep  8 12:44:02 2023
+ERROR: mjv_updateSceneState: m->nu changed
+
+Fri Sep  8 15:10:37 2023
+ERROR: mjv_updateSceneState: m->nu changed
+
+Fri Sep  8 15:15:21 2023
+ERROR: mjv_updateSceneState: m->nu changed
+
+Fri Sep  8 15:16:15 2023
+ERROR: mjv_updateSceneState: m->nu changed
+

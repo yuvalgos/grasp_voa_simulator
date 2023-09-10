@@ -1,0 +1,58 @@
+pose_1: # normal facing sideways
+  obj_pos:
+    - 0.025
+    - 0.0
+    - 0.1
+  obj_orientation:
+    - 3.14159265359
+    - 0.0
+    - 0.0
+
+pose_2: # upsidedown facing sideways
+  obj_pos:
+    - 0.025
+    - 0.0
+    - 0.1
+  obj_orientation:
+    - 3.14159265359
+    - 0.0
+    - 3.14159265359
+
+pose_3: # on the side facing sideways
+  obj_pos:
+    - 0.025
+    - 0.0
+    - 0.1
+  obj_orientation:
+    - 3.14159265359
+    - 0.0
+    - 1.57079632679
+
+pose_4: # normal facing to robot to robot
+  obj_pos:
+    - 0
+    - 0.025
+    - 0.1
+  obj_orientation:
+    - 1.57079632679
+    - 0.0
+    - 0.0
+pose_5: # upside down facing to robot
+  obj_pos:
+    - 0.0
+    - 0.025
+    - 0.1
+  obj_orientation:
+    - 1.57079632679
+    - 0.0
+    - 3.14159265359
+
+pose_6: # on the side facing robot
+  obj_pos:
+    - 0
+    - 0.025
+    - 0.1
+  obj_orientation:
+    - 1.57079632679
+    - 0.0
+    - 1.57079632679
