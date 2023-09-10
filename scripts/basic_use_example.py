@@ -3,7 +3,7 @@ from grasp_simulator.grasp_simulator import GraspSimulator
 import matplotlib.pyplot as plt
 
 
-simulator = GraspSimulator(launch_viewer=True, real_time=True, obj_file='../data/test_obj.xml')
+simulator = GraspSimulator(launch_viewer=True, real_time=True, obj_file='../data/world_mouse.xml')
 # Note: without viewer, the simulation is about ~20x faster, so we will use:
 # simulator = GraspSimulator(launch_viewer=False, real_time=False)
 # I'll add the logic to record videos without the viewer later if needed
@@ -12,9 +12,9 @@ simulator.verbose = 1   # set to 0 to disable printouts (default is 0)
 
 
 # object starts at default position, grasp from the front
-simulator.reset()
+simulator.reset(object_position_offset=[0, 0.025, 0.1], object_orientation=[pi/2, 0, 0])
 simulator.simulate_seconds(0.5)  # best to give it a bit of time to settle
-res = simulator.try_grasp(ee_pos_table=[0, 0, 0.1], ee_orientation=[pi, 0, -pi/2])
+res = simulator.try_grasp(ee_pos_table=[-0.00, -0.01, 0.07], ee_orientation=[0, pi/3, -pi/2])
 print("--------grasp result: ", res)
 
 # now grasp from the side

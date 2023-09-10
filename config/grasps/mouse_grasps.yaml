@@ -1,0 +1,39 @@
+grasp_1: # side with 45 angle above
+  grasp_pos:
+    - -0.02
+    - 0.0
+    - 0.07
+  grasp_orientation:
+    - 0
+    - 0.78539816339
+    - 0.0
+
+grasp_2: # above
+  grasp_pos:
+    - 0.0
+    - 0.0
+    - 0.1
+  grasp_orientation:
+    - 0.0
+    - 1.57079632679
+    - 0.0
+
+grasp_3: # above 90 deg
+  grasp_pos:
+    - 0.0
+    - 0.0
+    - 0.1
+  grasp_orientation:
+    - -1.57079632679
+    - 1.57079632679
+    - 0.0
+
+grasp_4: # front above
+  grasp_pos:
+    - 0.0
+    - -0.01
+    - 0.07
+  grasp_orientation:
+    - 0
+    - 1.0471975512
+    - -1.57079632679
