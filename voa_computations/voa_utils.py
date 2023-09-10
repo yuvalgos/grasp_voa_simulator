@@ -4,6 +4,7 @@ import pandas as pd
 
 def load_simulation_grasp_scores(object_name: str, noise_std: str):
     """
+    The Q function in the paper
     Load grasp scores from csv file.
     :param object_name: name of the object
     :param noise_std: standard deviation of the noise probably '0.00', '0.01', '0.03' or '0.05'
@@ -20,6 +21,7 @@ def uniform_belief(n_poses: int):
 
 def expected_grasp_score(grasp_scores, pose_belief):
     """
+    Qbar(x,b) in the paper
     Compute expected grasp score given a pose belief and score for a grasp for each pose
     :param grasp_scores: grasp scores for each pose
     :param pose_belief: belief over poses
@@ -43,6 +45,7 @@ def expected_grasps_score_multiple_grasps(grasp_scores_table, pose_belief):
 
 def max_expected_grasp_score(grasp_scores_table, pose_belief):
     """
+    Qbar*(b) in the paper, also returns x*
     compute the max expected grasp score given a pose belief and a table of grasp scores for each pose and grasp
     :param grasp_scores_table: grasp scores for each grasp and pose (grasp are the first dimention)
     :param pose_belief: belief over poses
@@ -50,6 +53,12 @@ def max_expected_grasp_score(grasp_scores_table, pose_belief):
     """
     scores = expected_grasps_score_multiple_grasps(grasp_scores_table, pose_belief)
     return np.max(scores), np.argmax(scores)
+
+
+def belief_update(initial_belief, observation_probabilities):  # revisit arguments
+    # includes the expectation over b?
+    pass
+
 
 
 scores = load_simulation_grasp_scores('expo', '0.01')
