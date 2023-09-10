@@ -1,4 +1,4 @@
-grasp_1:
+grasp_1: # front quite low
   grasp_pos:
     - 0.0
     - 0.0
@@ -8,32 +8,32 @@ grasp_1:
     - 0.0
     - -1.57079632679
 
-grasp_2:
+grasp_2:  # above
   grasp_pos:
     - 0.0
     - 0.0
     - 0.1
   grasp_orientation:
-    - 3.14159265359
     - 0.0
+    - 1.57079632679
     - 0.0
 
-grasp_3:
+grasp_3: # front high
   grasp_pos:
     - 0.0
     - 0.0
-    - 0.2
+    - 0.1
   grasp_orientation:
-    - 3.14159265359
-    - 0.0
+    - 0
+    - 0.7853981633974483
     - -1.57079632679
 
-grasp_4:
+grasp_4: # above 90 deg
   grasp_pos:
     - 0.0
     - 0.0
-    - 0.2
+    - 0.1
   grasp_orientation:
+    - -1.57079632679
+    - 1.57079632679
     - 0.0
-    - 0.0
-    - 3.14159265359

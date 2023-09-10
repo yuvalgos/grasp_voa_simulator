@@ -1,4 +1,4 @@
-pose_1:
+pose_1:  # laying down
   obj_pos:
     - 0.0
     - 0.0
@@ -8,7 +8,7 @@ pose_1:
     - 1.57079632679
     - 0.0
 
-pose_2:
+pose_2:  # laying down opposite
   obj_pos:
     - 0.0
     - 0.0
@@ -17,7 +17,8 @@ pose_2:
     - 0.0
     - -1.57079632679
     - 0.0
-pose_3:
+
+pose_3:  # standing facing from robot
   obj_pos:
     - 0.0
     - 0.0
@@ -27,7 +28,7 @@ pose_3:
     - 0.0
     - 0.0
 
-pose_4:
+pose_4:  # standing 45 deg
   obj_pos:
     - 0.0
     - 0.0
@@ -37,7 +38,7 @@ pose_4:
     - 0.0
     - 0.0
 
-pose_5:
+pose_5:  # laying on handle
   obj_pos:
     - 0.0
     - 0.0
@@ -47,7 +48,7 @@ pose_5:
     - 0.0
     - 1.57079632679
 
-pose_6:
+pose_6:  # laying 90 deg
   obj_pos:
     - 0.0
     - 0.0
