@@ -8,10 +8,11 @@ from grasp_simulator.utils import plot_depth_image, plot_lidar_im_depth_tri
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
-    mesh_file = '../data/objects/mug/mug.obj'
-    poses_file = '../config/poses/mug_poses.yaml'
-    obj_name = 'mug'
-    debug = False
+    mesh_file = '../data/objects/endstop_holder/endstop_holder.obj'
+    poses_file = '../config/poses/endstop_holder_poses.yaml'
+    obj_name = 'endstop_holder'
+    scale = 1.0
+    debug = True
     with open(poses_file, "r") as yaml_file:
         # Parse the YAML content into a Python dictionary
         poses = yaml.safe_load(yaml_file)
@@ -24,10 +25,10 @@ if __name__ == '__main__':
                             object_orientation=poses[pose]['obj_orientation'], lidar_dist=dist)
             simulator.simulate_seconds(0.2)
             sensors = simulator.sensors
-            lidar, im, depth_im = sensors.get_front_lidar_output(height=0.063, get_images=True)
+            lidar, im, depth_im = sensors.get_front_lidar_output(height=0.023, get_images=True)
             # plot_lidar_im_depth_tri(np.expand_dims(lidar, 0), im, depth_im, name="front lidar")
             inter_points, _, reading = extract_lidar_readings(obj_file_path=mesh_file, pose=poses[pose],
-                                                              lidar_height=0.05, lidar_dist=dist)
+                                                              lidar_height=0.01, lidar_dist=dist, scale=scale)
 
             both_readings = []
             points_2D = []

@@ -1,0 +1,39 @@
+grasp_1:
+  grasp_pos:
+    - 0.0
+    - 0.0
+    - 0.1
+  grasp_orientation:
+    - 3.14159265359
+    - 0.0
+    - -1.57079632679
+
+grasp_2:
+  grasp_pos:
+    - 0.0
+    - 0.0
+    - 0.1
+  grasp_orientation:
+    - 3.14159265359
+    - 0.0
+    - 0.0
+
+grasp_3:
+  grasp_pos:
+    - 0.0
+    - 0.0
+    - 0.2
+  grasp_orientation:
+    - 3.14159265359
+    - 0.0
+    - -1.57079632679
+
+grasp_4:
+  grasp_pos:
+    - 0.0
+    - 0.0
+    - 0.2
+  grasp_orientation:
+    - 0.0
+    - 0.0
+    - 3.14159265359

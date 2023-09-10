@@ -16,3 +16,6 @@ WARNING: mju_openResource: unknown file './data/world_mug.xml'
 Wed Aug 30 20:25:56 2023
 WARNING: mju_openResource: unknown file 'objects/test/test_obj.xml'
 
+Sat Sep  2 21:10:54 2023
+WARNING: mju_openResource: unknown file '../data/./objects/test/endstop_holder.xml'
+

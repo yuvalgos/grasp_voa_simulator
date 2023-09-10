@@ -1,0 +1,58 @@
+pose_1:
+  obj_pos:
+    - 0.0
+    - 0.0
+    - 0.1
+  obj_orientation:
+    - 0.0
+    - 1.57079632679
+    - 0.0
+
+pose_2:
+  obj_pos:
+    - 0.0
+    - 0.0
+    - 0.1
+  obj_orientation:
+    - 0.0
+    - -1.57079632679
+    - 0.0
+pose_3:
+  obj_pos:
+    - 0.0
+    - 0.0
+    - 0.1
+  obj_orientation:
+    - 0.0
+    - 0.0
+    - 0.0
+
+pose_4:
+  obj_pos:
+    - 0.0
+    - 0.0
+    - 0.1
+  obj_orientation:
+    - 0.7853981633974483
+    - 0.0
+    - 0.0
+
+pose_5:
+  obj_pos:
+    - 0.0
+    - 0.0
+    - 0.1
+  obj_orientation:
+    - 0.0
+    - 0.0
+    - 1.57079632679
+
+pose_6:
+  obj_pos:
+    - 0.0
+    - 0.0
+    - 0.1
+  obj_orientation:
+    - 1.57079632679
+    - 1.57079632679
+    - 0.0
