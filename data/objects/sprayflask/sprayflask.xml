@@ -5,14 +5,14 @@
 <!--  </visual>-->
 
   <asset>
-    <material name="mat" rgba="0.3 0.3 0.9 1." specular="0.5" shininess="0.5"/>
-    <mesh file="./objects/sprayflask/Sprayflask_800_tex.obj" scale="1.5 1.5 1.5"/>
+    <material name="mat" rgba="0.3 0.3 0.9 1"/>
+    <mesh name="flask" file="./objects/sprayflask/flask_shell.obj" scale="1.5 1.5 1.5"/>
   </asset>
 
   <worldbody>
     <body name="manipulated_object" pos="0 0 1">
       <joint type="free" name="manipulated_object_dof"/>
-      <geom type="mesh" mesh="Sprayflask_800_tex" material="mat" euler="0 0 0" group="1"/>
+      <geom type="mesh" mesh="flask" material="mat" euler="0 0 0" />
     </body>
   </worldbody>
 </mujoco>
