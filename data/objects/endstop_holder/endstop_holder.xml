@@ -6,13 +6,13 @@
 
   <asset>
     <material name="mat" rgba="0.3 0.3 0.9 1." specular="0.5" shininess="0.5"/>
-    <mesh file="./objects/endstop_holder/endstop_holder.obj" scale="1.0 1.0 1.0"/>
+    <mesh name="endstop" file="./objects/endstop_holder/endstop_holder_shell.obj" scale="1.0 1.0 1.0"/>
   </asset>
 
   <worldbody>
     <body name="manipulated_object" pos="0 0 1">
       <joint type="free" name="manipulated_object_dof"/>
-      <geom type="mesh" mesh="endstop_holder" material="mat" euler="0 0 0" group="1"/>
+      <geom type="mesh" mesh="endstop" material="mat" euler="0 0 0" group="1"/>
     </body>
   </worldbody>
 </mujoco>
