@@ -392,6 +392,7 @@ def analysis1(obj, noise):
     # Rotate x-axis labels for better readability (optional)
     plt.xticks(rotation=45, fontsize=24)
     plt.tight_layout()
+    plt.gcf().set_size_inches(14, 10)
     plt.savefig('../results/scatter_graph/' + obj + '/n_' + str(noise) + '.png')
     plt.show()
 
@@ -450,7 +451,7 @@ def base(obj, noise, test_num):
 
 
 if __name__ == '__main__':
-    obj = 'endstop_holder'
+    obj = 'mug'
     noise = 0.05
     analysis1(obj, noise)
     table(obj, noise)
