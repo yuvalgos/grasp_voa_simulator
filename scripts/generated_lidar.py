@@ -139,13 +139,30 @@ def closest_intersection(segments, m):
     return closest_point
 
 
-def extract_lidar_readings(obj_file_path, pose=None, pose_file=None, lidar_height=0.05, lidar_dist=0.25, scale=0.01):
+def euler_to_quaternion(roll, pitch, yaw):
+    cy = np.cos(yaw * 0.5)
+    sy = np.sin(yaw * 0.5)
+    cp = np.cos(pitch * 0.5)
+    sp = np.sin(pitch * 0.5)
+    cr = np.cos(roll * 0.5)
+    sr = np.sin(roll * 0.5)
+
+    qx = sr * cp * cy + cr * sp * sy
+    qy = cr * sp * cy - sr * cp * sy
+    qz = cr * cp * sy + sr * sp * cy
+    qw = cr * cp * cy - sr * sp * sy
+
+    return qx, qy, qz, qw
+
+
+def extract_lidar_readings(obj_file_path, pose=None, pose_file=None, lidar_height=0.05, lidar_dist=0.25, scale=0.01,
+                           q=1):
     vertices, faces = load_obj(obj_file_path)
     vertices *= scale
     desired_pose = pose
     if pose_file is not None:
         with open(pose_file, 'r') as yaml_file:
-            desired_pose = yaml.load(yaml_file, Loader=yaml.FullLoader)['pose_3']
+            desired_pose = yaml.load(yaml_file, Loader=yaml.FullLoader)
     w, x, y, z = scipy.spatial.transform.Rotation.from_euler('xyz', desired_pose['obj_orientation']).as_quat()
     rotation_matrix = np.array([
         [1 - 2 * (y ** 2 + z ** 2), 2 * (x * y - w * z), 2 * (x * z + w * y)],
@@ -154,11 +171,23 @@ def extract_lidar_readings(obj_file_path, pose=None, pose_file=None, lidar_heigh
     ])
     vertices = np.dot(vertices, rotation_matrix.T)
     min_z = np.min(vertices[:, 2])
-    tx, ty, tz = 0., 0., 0.
-    ty += lidar_dist
+    tx, ty, tz = desired_pose['obj_pos'][0], desired_pose['obj_pos'][1], 0.0
+    angles = None
+    if q == 1:
+        tx += lidar_dist
+        angles = list(range(91)) + list(range(270, 360))
+    if q == 2:
+        ty += lidar_dist
+        angles = list(range(181))
+    if q == 3:
+        tx -= lidar_dist
+        angles = list(range(90, 271))
+    if q == 4:
+        ty -= lidar_dist
+        angles = list(range(180, 360))
     tz += np.abs(min_z)
     vertices = vertices + np.array([tx, ty, tz])
-    visualize_mesh(vertices, faces)
+    # visualize_mesh(vertices, faces)
     # trans = transformation(tx, ty, tz, rx, ry, rz)
     # vertices = np.dot(np.hstack((vertices, np.ones((vertices.shape[0], 1)))), trans)[:, :3]
     h = lidar_height
@@ -168,19 +197,32 @@ def extract_lidar_readings(obj_file_path, pose=None, pose_file=None, lidar_heigh
 
     inter_points = []
     readings = {}
-    for i in range(180):
+    for i in angles:
         pnt = closest_intersection(contour, np.tan(np.radians(i)))
         if pnt[0] != np.inf and pnt[1] != np.inf:
-            inter_points.append(pnt)
-            idx = i if i <= 180 else i - 360
-            readings[idx] = (np.sqrt(pnt[1] ** 2 + pnt[0] ** 2))
+            if q == 1:
+                inter_points.append(pnt)
+                readings[i] = (np.sqrt(pnt[1] ** 2 + pnt[0] ** 2))
+            if q == 2:
+                inter_points.append([pnt[1], -pnt[0]])
+                idx = i - 90 if i >= 90 else 360 - (90 - i)
+                readings[idx] = (np.sqrt(pnt[1] ** 2 + pnt[0] ** 2))
+            if q == 3:
+                inter_points.append([-pnt[0], -pnt[1]])
+                idx = i - 180 if i >= 180 else 360 - (180 - i)
+                readings[idx] = (np.sqrt(pnt[1] ** 2 + pnt[0] ** 2))
+            if q == 4:
+                inter_points.append([-pnt[1], pnt[0]])
+                idx = i - 270 if i >= 270 else 360 - (270 - i)
+                readings[idx] = (np.sqrt(pnt[1] ** 2 + pnt[0] ** 2))
     return np.array(inter_points), points, readings
 
 
 if __name__ == "__main__":
-    mesh_file = '../data/objects/endstop_holder/endstop_holder.obj'
-    poses_file = '../config/poses/mug_poses.yaml'
-    inter_points, points, readings = extract_lidar_readings(mesh_file, pose_file=poses_file, lidar_height=0.05, scale=1.0)
+    mesh_file = '../data/objects/sprayflask/Sprayflask_800_tex.obj'
+    pose_file = '../config/poses/example_pose.yaml'
+    inter_points, points, readings = extract_lidar_readings(mesh_file, pose_file=pose_file, lidar_height=0.05,
+                                                            scale=1.0)
     # plt.scatter(inter_points[:, 0], inter_points[:, 1])
     # plt.show()
 

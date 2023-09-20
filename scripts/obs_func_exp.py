@@ -11,6 +11,7 @@ if __name__ == '__main__':
     mesh_file = '../data/objects/endstop_holder/endstop_holder.obj'
     poses_file = '../config/poses/endstop_holder_poses.yaml'
     obj_name = 'endstop_holder'
+    xml_file = '../data/world_endstop_holder.xml'
     scale = 1.0
     debug = True
     with open(poses_file, "r") as yaml_file:
@@ -18,7 +19,7 @@ if __name__ == '__main__':
         poses = yaml.safe_load(yaml_file)
     lidar_dists = [0.15, 0.20, 0.25, 0.30]
 
-    simulator = GraspSimulator(launch_viewer=False, real_time=False)
+    simulator = GraspSimulator(launch_viewer=False, real_time=False, obj_file=xml_file)
     for dist in lidar_dists:
         for pose in poses.keys():
             simulator.reset(object_position_offset=poses[pose]['obj_pos'],
@@ -42,14 +43,14 @@ if __name__ == '__main__':
                 if 90 + 22 - i in reading.keys():
                     both_readings.append((90 + 22 - i, lidar[i], reading[90 + 22 - i]))
 
-            with open('../results/obs_func_exp/' + obj_name + '/' + pose + '_' + str(int(dist*10)) + '.csv', 'w',
+            with open('../results/obs_func_exp/' + obj_name + '/' + pose + '_' + str(int(dist * 10)) + '.csv', 'w',
                       newline='') as csvfile:
                 csv_writer = csv.writer(csvfile)
                 csv_writer.writerows(both_readings)
 
             if debug:
                 z_plane = 0.0
-                points_2D = np.array(test)
+                points_2D = np.array(points_2D)
                 test = np.array(inter_points)
                 test_3d = np.column_stack((test, np.full(test.shape[0], z_plane)))
                 points_3d = np.column_stack((points_2D, np.full(points_2D.shape[0], z_plane)))

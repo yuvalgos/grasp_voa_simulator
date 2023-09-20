@@ -1,7 +1,7 @@
 <mujoco model="mug_lean">
   <asset>
     <material name="mouse" specular="1" shininess="1"/>
-    <mesh name="mouse" file="./objects/mouse/Y10305_Computer_Mouse_3.obj" scale=".2 .2 .2"/>
+    <mesh name="mouse" file="./objects/mouse/mouse.obj" scale=".2 .2 .2"/>
   </asset>
 
   <default>

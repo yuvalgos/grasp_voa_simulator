@@ -31,3 +31,6 @@ ERROR: mjv_updateSceneState: m->nu changed
 Fri Sep  8 15:16:15 2023
 ERROR: mjv_updateSceneState: m->nu changed
 
+Mon Sep 11 17:53:11 2023
+WARNING: mju_openResource: unknown file '../data/wo'
+

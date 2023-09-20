@@ -33,6 +33,18 @@ class Sensor:
         self.front_lidar_camera.elevation = 0
         self.front_lidar_camera.azimuth = 90
 
+        self.left_lidar_camera = MjvCamera()
+        self.left_lidar_camera.lookat = TABLE_ORIGIN
+        self.left_lidar_camera.distance = lidar_dist
+        self.left_lidar_camera.elevation = 0
+        self.left_lidar_camera.azimuth = 0
+
+        self.back_lidar_camera = MjvCamera()
+        self.back_lidar_camera.lookat = TABLE_ORIGIN
+        self.back_lidar_camera.distance = lidar_dist
+        self.back_lidar_camera.elevation = 0
+        self.back_lidar_camera.azimuth = 270
+
     def reset(self, lidar_dist):
         self.side_lidar_camera.distance = lidar_dist
         self.front_lidar_camera.distance = lidar_dist
@@ -44,6 +56,14 @@ class Sensor:
     def get_front_lidar_output(self, height=0.1, get_images=False):
         self.front_lidar_camera.lookat = TABLE_ORIGIN + [0, 0, height]
         return self.get_lidar_output_by_camera(self.front_lidar_camera, get_images)
+
+    def get_left_lidar_output(self, height=0.1, get_images=False):
+        self.left_lidar_camera.lookat = TABLE_ORIGIN + [0, 0, height]
+        return self.get_lidar_output_by_camera(self.left_lidar_camera, get_images)
+
+    def get_back_lidar_output(self, height=0.1, get_images=False):
+        self.back_lidar_camera.lookat = TABLE_ORIGIN + [0, 0, height]
+        return self.get_lidar_output_by_camera(self.back_lidar_camera, get_images)
 
     def get_lidar_output_by_camera(self, camera: MjvCamera, get_images=False):
         self.lidar_renderer.update_scene(self.data, camera=camera)
